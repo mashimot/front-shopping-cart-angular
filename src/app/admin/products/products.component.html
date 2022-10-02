@@ -1,0 +1,27 @@
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>
+                <button class="btn btn-primary" (click)="create()">
+                    Create
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngIf="(products$ | async) as products">
+            <tr *ngFor="let product of products; let productIndex = index;">
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>
+                    <button class="btn btn-secondary" (click)="update(product.id)">update</button>
+                    <button class="btn btn-danger" (click)="delete(product.id)">x</button>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>  
+
+<pre>{{  (products$ | async) | json }}</pre>

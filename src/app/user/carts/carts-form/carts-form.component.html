@@ -1,0 +1,68 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <fieldset class="border p-2 mb-2" formArrayName="cart">
+        <legend  class="w-auto">Carrinho</legend>
+        <div *ngIf="cart.hasError('minLengthArray')" class="alert alert-danger">
+            <i class="bi bi-exclamation-circle-fill"></i>  Adicione algum produto no carrinho
+        </div>      
+        <div *ngFor="let cartData of cart.controls; let indexCart = index;" [formGroupName]="indexCart" class=" border border-dark p-2 mb-1">
+            <div class="row">
+                <div class="col-md-12 mb-1">
+                    <div class="btn-group float-end">
+                        <button type="button" class="btn btn-danger btn-sm" (click)="deleteCart(indexCart)">x</button>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-1">
+                    Produto: {{ cart.at(indexCart).get('name')!.value }}
+                </div>
+                <div class="col-md-12 mb-1">
+                    Valor: {{ cart.at(indexCart).get('price')!.value | currency: 'BRL' }}
+                </div>
+                <div class="col-md-12 mb-1">
+                    <div class="form-group">
+                        <label for="quantity">Quantidade</label>
+                        <input type="number" formControlName="quantity" id="Quantidade" class="form-control" [class.is-invalid]="!cart.at(indexCart).get('quantity')?.valid">
+                        <div *ngIf="!cart.at(indexCart).get('quantity')?.valid" class="invalid-feedback">
+                            <div *ngIf="cart.at(indexCart).get('quantity')!.hasError('required')">Quantidade is required</div>
+                            <div *ngIf="cart.at(indexCart).get('quantity')!.hasError('maxlength')">Quantidade max must be 9999</div>
+                            <div *ngIf="cart.at(indexCart).get('quantity')!.hasError('minlength')">Quantidade min must be 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="border p-2">
+        <legend  class="w-auto">Endereço para Entrega</legend>
+
+        <ng-container *ngIf="(addresses$ | async) as addresses">
+            <div *ngFor="let address of addresses; let indexAddress = index;">                
+                <div class="form-check">
+                    <input 
+                        class="form-check-input" 
+                        type="radio" 
+                        [id]="'address-' + indexAddress" 
+                        [value]="address.id"
+                        [class.is-invalid]="isFieldValid('user_address_id')"
+                        formControlName="user_address_id"
+                    />
+                    <label class="form-check-label" [for]="'address-' + indexAddress">
+                        <div class="border border-dark p-3">
+                            <div>City: {{ address.city }}</div>
+                            <div>Country: {{ address.country }}</div>
+                            <div>State: {{ address.state }}</div>
+                            <div>Street Name: {{ address.street_name }}</div>
+                            <div>Street Number: {{ address.street_number }}</div>
+                            <div>CEP: {{ address.cep }}</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div *ngIf="isFieldValid('user_address_id')" class="invalid-feedback">
+                <div *ngIf="userAddressId!.hasError('required')">USER_ADDRESS_ID is required</div>
+            </div>
+        </ng-container>
+    </fieldset>
+    <button type="submit" class="btn btn-primary">
+        Comprar
+    </button>
+</form>

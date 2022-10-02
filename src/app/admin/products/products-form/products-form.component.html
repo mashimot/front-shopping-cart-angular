@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <pre>{{ form.value | json }}</pre>
+    <div class="form-group">
+        <label for="name">name</label>
+        <input type="text" formControlName="name" id="name" class="form-control" [class.is-invalid]="isFieldValid('name')">
+        <div *ngIf="isFieldValid('name')" class="invalid-feedback">
+            <div *ngIf="name!.hasError('required')">NAME is required</div>
+            <div *ngIf="name!.hasError('minlength')">NAME min must be 3</div>
+            <div *ngIf="name!.hasError('maxlength')">NAME max must be 255</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">description</label>
+        <input type="text" formControlName="description" id="description" class="form-control" [class.is-invalid]="isFieldValid('description')">
+        <div *ngIf="isFieldValid('description')" class="invalid-feedback">
+            <div *ngIf="description!.hasError('required')">DESCRIPTION is required</div>
+            <div *ngIf="description!.hasError('minlength')">DESCRIPTION min must be 3</div>
+            <div *ngIf="description!.hasError('maxlength')">DESCRIPTION max must be 255</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="price">price</label>
+        <input type="number" formControlName="price" id="price" class="form-control" [class.is-invalid]="isFieldValid('price')">
+        <div *ngIf="isFieldValid('price')" class="invalid-feedback">
+            <div *ngIf="price!.hasError('required')">PRICE is required</div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+</form>

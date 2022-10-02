@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-sm">
+            <tbody>
+                <ng-container *ngIf="(products$ | async) as products">
+                    <tr *ngFor="let product of products; let productIndex = index;">
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>
+                            <button class="btn btn-primary" (click)="addToCart(product)">+</button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>                
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <app-carts-form
+                    [product]="product"
+                ></app-carts-form>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
+

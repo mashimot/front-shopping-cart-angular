@@ -1,0 +1,36 @@
+<ng-container *ngIf="(orders$ | async) as orders">
+    <div 
+        *ngFor="let order of orders; let orderIndex = index" 
+        class="card mb-3" 
+        [ngClass]="{ 'border border-danger': order_id && order_id == order.order_id }"
+    >
+        <div class="card-header">
+            <h4># Pedido {{ order.order_id }}</h4>
+        </div>
+        <div class="card-body">
+            <h5>Total: {{ order.total_amount | currency: 'BRL' }}</h5>
+            <div class="border border-dark p-3 mb-2">
+                <h4>Endereco de Entrega</h4>
+
+                <div>City: {{ order.address.city }}</div>
+                <div>Country: {{ order.address.country }}</div>
+                <div>State: {{ order.address.state }}</div>
+                <div>Street Name: {{ order.address.street_name }}</div>
+                <div>Street Number: {{ order.address.street_number }}</div>
+                <div>CEP: {{ order.address.cep }}</div>
+            </div>
+            <div class="border border-dark p-3 mb-2">
+                <h4>Produtos</h4>
+
+                <div *ngFor="let orderItem of order.order_items; let orderItemIndex = index;" class="border border-dark p-3 mb-2" >
+                    <ul class="list-group">
+                        <li class="list-group-item">Produto: {{ orderItem.product_name }}</li>
+                        <li class="list-group-item">Qtd: {{ orderItem.quantity }}</li>
+                        <li class="list-group-item">Valor Unitário: {{ orderItem.amount | currency: 'BRL' }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
